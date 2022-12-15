@@ -39,6 +39,7 @@ def create_users():
     db.session.commit()
     print("done! created users:", admin, user)
 
+
 @app.route("/")
 def index():
     return render_template('index.html')

@@ -8,4 +8,4 @@ class CustomUser(db.Model):
     is_staff = Column(Boolean, nullable=False, default=False)
 
     def __repr__(self) -> str:
-        return f"<CustomUser {self.id} {self.username}"
+        return f"<CustomUser {self.id} {self.username}>"
