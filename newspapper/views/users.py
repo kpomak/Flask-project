@@ -22,7 +22,7 @@ def user_detail(user_id: int):
     except KeyError:
         raise NotFound(f"User {user_id} doesn't exists! 😢")
     return render_template(
-        'users/detail.html',
+        'users/details.html',
         user_id=user_id,
         user_name=user_name
         )
