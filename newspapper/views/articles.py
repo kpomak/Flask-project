@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template
 from werkzeug.exceptions import NotFound
+from flask_login import login_required
 
 articles_app = Blueprint("articles_app", __name__)
 
@@ -15,6 +16,7 @@ def articles_list():
 
 
 @articles_app.route("/<string:title>/", endpoint="details")
+@login_required
 def aricle_details(title: str):
     if title in ARTICLES:
         return render_template(

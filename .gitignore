@@ -1,9 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-
 *.py[cod]
 *$py.class
-*.db
 # C extensions
 *.so
 
@@ -429,6 +427,7 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -562,3 +561,4 @@ FodyWeavers.xsd
 
 .vscode
 
+db.sqlite

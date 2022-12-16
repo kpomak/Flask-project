@@ -1,9 +1,13 @@
+import os
+
+from dotenv import load_dotenv
 from flask import Flask, render_template
 from newspapper.views.users import users_app
 from newspapper.views.articles import articles_app
 from newspapper.models.database import db
 from newspapper.views.auth import login_manager, auth_app
 
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -11,9 +15,8 @@ app.register_blueprint(users_app, url_prefix='/users')
 app.register_blueprint(articles_app, url_prefix='/articles')
 app.register_blueprint(auth_app, url_prefix='/auth')
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../newspapper.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SECRET_KEY"] = '3NcZHFZ8kUxe4pGeox68yt9YedlauZX5'
+config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
+app.config.from_object(f'newspapper.config.{config_name}')
 
 db.init_app(app)
 login_manager.init_app(app)
@@ -26,7 +29,6 @@ def init_db():
     """
     db.create_all()
     print("done!")
-
 
 @app.cli.command("create-users")
 def create_users():
@@ -42,7 +44,6 @@ def create_users():
     db.session.add(user)
     db.session.commit()
     print("done! created users:", admin, user)
-
 
 @app.route("/")
 def index():
