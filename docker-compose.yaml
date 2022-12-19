@@ -1,27 +1,41 @@
 version: '3.5'
 
 services:
-  app:
+  db:
+    image: postgres:14.6
+    env_file:
+      - .env
+    privileged: true
+    restart: always
+    environment:
+      POSTGRES_DB: newspapper
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ${HOME}/Projects/Flask-project/pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+
+
+  backend:
+    env_file:
+      - .env
     build:
       dockerfile: ./Dockerfile
       context: .
-      environment:
-        SQLALCHEMY_DATABASE_URI: postgresql://user:password@pg:5432/blog
-        CONFIG_NAME: DevConfig
-      volumes:
-        - ./blog:/app/blog
-      ports:
-        - 5000:5000
-    depends_on:
-      - pg
-  pg:
-    image: postgres:12
+    restart: always
     environment:
-      POSTGRES_DB: blog
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - ${HOME}/dbs/flask-lesson/pgdata_dev:/var/lib/postgresql/data/pgdata
+      SQLALCHEMY_DATABASE_URI: $SQLALCHEMY_DATABASE_URI
+      CONFIG_NAME: $CONFIG_NAME
     ports:
-      - 5432:5432
+      - 5000:5000
+    # command: bash -c "./wait_for_pg.sh db"
+    depends_on:
+      - db
