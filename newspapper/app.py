@@ -2,6 +2,8 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask, render_template
+from flask_migrate import Migrate
+
 from newspapper.views.users import users_app
 from newspapper.views.articles import articles_app
 from newspapper.models.database import db
@@ -20,6 +22,7 @@ app.config.from_object(f'newspapper.config.{config_name}')
 
 db.init_app(app)
 login_manager.init_app(app)
+migrate = Migrate(app, db)
 
 @app.cli.command("init-db")
 def init_db():

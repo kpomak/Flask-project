@@ -34,6 +34,8 @@ services:
     environment:
       SQLALCHEMY_DATABASE_URI: $SQLALCHEMY_DATABASE_URI
       CONFIG_NAME: $CONFIG_NAME
+    volumes:
+      - ./newspapper:/app/newspapper
     ports:
       - 5000:5000
     # command: bash -c "./wait_for_pg.sh db"
