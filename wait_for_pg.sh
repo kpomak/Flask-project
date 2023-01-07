@@ -6,7 +6,7 @@ host="$1"
 shift
 cmd="$@"
 
-until PGPASSWORD="$POSTGRES_PASSWORD" psql -h "localhost" -d "newspapper" -U "$POSTGRES_USER" -c '\q';
+until PGPASSWORD="$POSTGRES_PASSWORD" psql -h "db" -d "newspapper" -U "$POSTGRES_USER" -c '\q';
 do
   >&2 echo "Postgres is unavaliable - sleeping"
   sleep 1
