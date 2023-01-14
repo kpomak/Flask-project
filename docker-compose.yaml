@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres:14.6
+    env_file:
+      - .env
+    privileged: true
+    restart: always
+    environment:
+      POSTGRES_DB: newspapper
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ${HOME}/Projects/Flask-project/pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+
+
+  backend:
+    env_file:
+      - .env
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    restart: always
+    environment:
+      SQLALCHEMY_DATABASE_URI: $SQLALCHEMY_DATABASE_URI
+      CONFIG_NAME: $CONFIG_NAME
+    volumes:
+      - ./newspapper:/app/newspapper
+    ports:
+      - 5000:5000
+    command: bash -c "./wait_for_pg.sh db && flask db upgrade && python3 wsgi.py"
+    depends_on:
+      - db
