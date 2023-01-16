@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash
 
 from newspapper.models.database import db
 from newspapper.views.articles import articles_app
@@ -25,14 +26,14 @@ login_manager.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
 
 
-@app.cli.command("init-db")
-def init_db():
-    """
-    Run in your terminal:
-    flask init-db
-    """
-    db.create_all()
-    print("done!")
+# @app.cli.command("init-db")
+# def init_db():
+#     """
+#     Run in your terminal:
+#     flask init-db
+#     """
+#     db.create_all()
+#     print("done!")
 
 
 @app.cli.command("create-users")
@@ -44,11 +45,14 @@ def create_users():
     """
     from newspapper.models import CustomUser
 
-    admin = CustomUser(username="admin", is_staff=True)
-    user = CustomUser(username="user")
+    admin = CustomUser(
+        username="admin", password=generate_password_hash("555"), is_staff=True
+    )
+    user = CustomUser(username="user", password=generate_password_hash("555"))
     db.session.add(admin)
     db.session.add(user)
     db.session.commit()
+
     print("done! created users:", admin, user)
 
 
