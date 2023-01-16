@@ -5,7 +5,7 @@ from flask_login import (LoginManager, current_user, login_required,
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash
 
-from newspapper.forms.user import RegistrationForm
+from newspapper.forms.user import LoginForm, RegistrationForm
 from newspapper.models import CustomUser
 from newspapper.models.database import db
 
@@ -70,23 +70,45 @@ def unauthorized():
 
 @auth_app.route("/login/", methods=["GET", "POST"], endpoint="login")
 def login():
-    if request.method == "GET":
-        if current_user.is_authenticated:
-            return redirect(url_for("users.user_detail", user_id=current_user.id))
-        return render_template("auth/login.html")
+    # if request.method == "GET":
+    #     if current_user.is_authenticated:
+    #         return redirect(url_for("users.user_detail", user_id=current_user.id))
+    #     return render_template("auth/login.html")
 
-    username = request.form.get("username")
-    password = request.form.get("password")
+    # username = request.form.get("username")
+    # password = request.form.get("password")
 
-    if not username or not password:
-        return render_template("auth/login.html", error="credentials are passed")
-    user = CustomUser.query.filter_by(username=username).one_or_none()
+    # if not username or not password:
+    #     return render_template("auth/login.html", error="credentials are passed")
+    # user = CustomUser.query.filter_by(username=username).one_or_none()
 
-    if not user or not check_password_hash(user.password, password):
-        flash("Check your login details")
-        return render_template("auth/login.html", error=f"Check username and password")
-    login_user(user)
-    return redirect(url_for("index"))
+    # if not user or not check_password_hash(user.password, password):
+    #     flash("Check your login details")
+    #     return render_template("auth/login.html", error=f"Check username and password")
+    # login_user(user)
+    # # return redirect(url_for("index"))
+
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    form = LoginForm(request.form)
+
+    if request.method == "POST" and form.validate_on_submit():
+        user = CustomUser.query.filter_by(username=form.username.data).one_or_none()
+
+        if not user:
+            return render_template(
+                "auth/login.html", form=form, error="username doesn't exist"
+            )
+
+        if not check_password_hash(user.password, form.password.data):
+            return render_template(
+                "auth/login.html", form=form, error="invalid username or password"
+            )
+
+        login_user(user)
+        return redirect(url_for("index"))
+    return render_template("auth/login.html", form=form)
 
 
 @auth_app.route("/logout/", endpoint="logout")
