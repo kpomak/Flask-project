@@ -1,8 +1,11 @@
 import os
 
+import click
 from dotenv import load_dotenv
 from flask import Flask, render_template
 from flask_migrate import Migrate
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
 
 from newspapper.models.database import db
 from newspapper.views.articles import articles_app
@@ -25,31 +28,42 @@ login_manager.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
 
 
-@app.cli.command("init-db")
-def init_db():
-    """
-    Run in your terminal:
-    flask init-db
-    """
-    db.create_all()
-    print("done!")
+# @app.cli.command("init-db")
+# def init_db():
+#     """
+#     Run in your terminal:
+#     flask init-db
+#     """
+#     db.create_all()
+#     print("done!")
 
 
-@app.cli.command("create-users")
-def create_users():
+@app.cli.command("create-admin")
+@click.argument("username")
+@click.argument("password")
+@click.argument("email")
+def create_users(username, password, email):
     """
     Run in your terminal:
-    flask create-users
-    > done! created users: <User #1 'admin'> <User #2 'james'>
+    flask create-admin {username} {password} {email}
     """
+
     from newspapper.models import CustomUser
 
-    admin = CustomUser(username="admin", is_staff=True)
-    user = CustomUser(username="user")
+    admin = CustomUser(
+        username=username,
+        email=email,
+        password=generate_password_hash(password),
+        is_staff=True,
+    )
+
     db.session.add(admin)
-    db.session.add(user)
-    db.session.commit()
-    print("done! created users:", admin, user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        print(f"Current admin with {username=} or {email=} already exists")
+    else:
+        print("done! admin created")
 
 
 @app.route("/")
