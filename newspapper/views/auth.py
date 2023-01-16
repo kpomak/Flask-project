@@ -39,7 +39,7 @@ def login():
     if not username or not password:
         return render_template("auth/login.html", error="credentials are passed")
     user = CustomUser.query.filter_by(username=username).one_or_none()
-    
+
     if not user or not check_password_hash(user.password, password):
         flash("Check your login details")
         return render_template("auth/login.html", error=f"Check username and password")

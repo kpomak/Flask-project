@@ -7,6 +7,9 @@ from newspapper.models.database import db
 class CustomUser(db.Model, UserMixin):
     id = Column(Integer, primary_key=True)
     username = Column(String(255), unique=True, nullable=False)
+    first_name = Column(String(120), unique=False, nullable=True)
+    last_name = Column(String(120), unique=False, nullable=True)
+    email = Column(String(255), unique=True, nullable=False)
     password = Column(String(255), unique=False, nullable=False)
     is_staff = Column(Boolean, nullable=False, default=False)
 

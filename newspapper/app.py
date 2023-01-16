@@ -46,9 +46,14 @@ def create_users():
     from newspapper.models import CustomUser
 
     admin = CustomUser(
-        username="admin", password=generate_password_hash("555"), is_staff=True
+        username="admin",
+        email="admin@lh.com",
+        password=generate_password_hash("555"),
+        is_staff=True,
     )
-    user = CustomUser(username="user", password=generate_password_hash("555"))
+    user = CustomUser(
+        username="user", email="user@lh.com", password=generate_password_hash("555")
+    )
     db.session.add(admin)
     db.session.add(user)
     db.session.commit()
