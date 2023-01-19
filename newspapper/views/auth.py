@@ -3,7 +3,7 @@ from flask import (Blueprint, current_app, flash, redirect, render_template,
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from sqlalchemy.exc import IntegrityError
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from newspapper.forms.user import LoginForm, RegistrationForm
 from newspapper.models import CustomUser
@@ -41,7 +41,7 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             username=form.username.data,
-            password=form.password.data,
+            password=generate_password_hash(form.password.data),
             email=form.email.data,
             is_staff=False,
         )
@@ -70,24 +70,6 @@ def unauthorized():
 
 @auth_app.route("/login/", methods=["GET", "POST"], endpoint="login")
 def login():
-    # if request.method == "GET":
-    #     if current_user.is_authenticated:
-    #         return redirect(url_for("users.user_detail", user_id=current_user.id))
-    #     return render_template("auth/login.html")
-
-    # username = request.form.get("username")
-    # password = request.form.get("password")
-
-    # if not username or not password:
-    #     return render_template("auth/login.html", error="credentials are passed")
-    # user = CustomUser.query.filter_by(username=username).one_or_none()
-
-    # if not user or not check_password_hash(user.password, password):
-    #     flash("Check your login details")
-    #     return render_template("auth/login.html", error=f"Check username and password")
-    # login_user(user)
-    # # return redirect(url_for("index"))
-
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 

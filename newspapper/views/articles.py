@@ -17,7 +17,7 @@ def articles_list():
     return render_template("articles/list.html", articles=articles)
 
 
-@articles_app.route("/<string:title>/", endpoint="details")
+@articles_app.route("/<int:article_id>/", endpoint="details")
 @login_required
 def aricle_details(article_id: int):
     article = Article.query.filter_by(id=article_id).one_or_none()
@@ -43,9 +43,9 @@ def create_article():
         else:
             # otherwise create author record
             author = Author(user_id=current_user.id)
-        db.session.add(author)
-        db.session.flush()
-        article.author = current_user.author
+            db.session.add(author)
+            db.session.flush()
+            article.author = author
         try:
             db.session.commit()
         except IntegrityError:
