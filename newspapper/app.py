@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash
 from newspapper.models.database import db
 from newspapper.views.articles import articles_app
 from newspapper.views.auth import auth_app, login_manager
+from newspapper.views.authors import authors_app
 from newspapper.views.users import users_app
 
 load_dotenv()
@@ -19,6 +20,7 @@ app = Flask(__name__)
 app.register_blueprint(users_app, url_prefix="/users")
 app.register_blueprint(articles_app, url_prefix="/articles")
 app.register_blueprint(auth_app, url_prefix="/auth")
+app.register_blueprint(authors_app, url_prefix="/authors")
 
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
