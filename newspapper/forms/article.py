@@ -1,5 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, validators
+from wtforms import (
+    StringField,
+    SubmitField,
+    TextAreaField,
+    SelectMultipleField,
+    validators,
+)
 
 
 class CreateArticleForm(FlaskForm):
@@ -12,4 +18,7 @@ class CreateArticleForm(FlaskForm):
         "Body",
         [validators.DataRequired()],
     )
+
     submit = SubmitField("Publish")
+
+    tags = SelectMultipleField("Tags", coerce=int)

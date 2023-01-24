@@ -1,11 +1,11 @@
-from flask import (Blueprint, current_app, redirect, render_template, request,
-                   url_for)
+from flask import Blueprint, current_app, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
 from werkzeug.exceptions import NotFound
 
 from newspapper.forms.article import CreateArticleForm
-from newspapper.models import Article, Author
+from newspapper.models import Article, Author, Tag
 from newspapper.models.database import db
 
 articles_app = Blueprint("articles_app", __name__)
@@ -20,7 +20,11 @@ def articles_list():
 @articles_app.route("/<int:article_id>/", endpoint="details")
 @login_required
 def aricle_details(article_id: int):
-    article = Article.query.filter_by(id=article_id).one_or_none()
+    article = (
+        Article.query.filter_by(id=article_id)
+        .options(joinedload(Article.tags))
+        .one_or_none()
+    )
     if not article:
         raise NotFound(f"Article doesn't exists! 😢")
     return render_template(
@@ -34,8 +38,12 @@ def aricle_details(article_id: int):
 def create_article():
     error = None
     form = CreateArticleForm(request.form)
+    form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.order_by("name")]
     if request.method == "POST" and form.validate_on_submit():
         article = Article(title=form.title.data.strip(), body=form.body.data)
+        if form.tags.data:
+            selected_tags = Tag.query.filter(Tag.id.in_(form.tags.data))
+            article.tags.extend(selected_tags)
         db.session.add(article)
         if current_user.author:
             # use existing author if present
