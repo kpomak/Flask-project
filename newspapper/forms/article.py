@@ -1,11 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    SubmitField,
-    TextAreaField,
-    SelectMultipleField,
-    validators,
-)
+from wtforms import (SelectMultipleField, StringField, SubmitField,
+                     TextAreaField, validators)
 
 
 class CreateArticleForm(FlaskForm):

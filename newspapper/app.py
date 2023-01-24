@@ -75,6 +75,7 @@ def create_tags():
     ➜ flask create-tags
     """
     from newspapper.models import Tag
+
     tags = [
         "#flask",
         "#django",

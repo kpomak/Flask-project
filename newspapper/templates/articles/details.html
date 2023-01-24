@@ -8,16 +8,30 @@ Article #{{ article.id }}: {{ article.title }}
 <h1>{{ article.title }}</h1>
 <div>
 	<p>{{ article.body }}</p>
-	<div>Published {{ article.dt_created }}</div>
-	<div>by {{ article.author.user.username }}</div>
-	{% if article.tags %}
-	<div>Tags:</div>
-	<ul>
-		{% for tag in article.tags %}
-		<li>{{ tag.name }}</li>
-		{% endfor %}
-	</ul>
-	{% endif %}
+	<div class="row">
+		<div class="col-6">
+			<div>
+				<small>
+					published at {{ article.dt_created.strftime('%d-%m-%Y') }}
+				</small>
+			</div>
+			<div>
+				<small>
+					by {{ article.author.user.first_name }} {{ article.author.user.last_name }}
+				</small>
+			</div>
+		</div>
+		<div class="col-6">
+			{% if article.tags %}
+			<ul>
+				{% for tag in article.tags %}
+				<li class="badge bg-primary">{{ tag.name }}</li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+		</div>
+	</div>
+
 	<a href="{{ url_for('articles_app.list') }}">
 		Back to articles
 	</a>
