@@ -23,11 +23,11 @@ Article #{{ article.id }}: {{ article.title }}
 		</div>
 		<div class="col-6">
 			{% if article.tags %}
-			<ul>
 				{% for tag in article.tags %}
-				<li class="badge bg-primary">{{ tag.name }}</li>
+				<a href="{{url_for('articles_app.filter', tag_name=tag.name)}}">
+					<span class="badge bg-primary"> {{ tag.name }} </span>
+				</a>
 				{% endfor %}
-			</ul>
 			{% endif %}
 		</div>
 	</div>

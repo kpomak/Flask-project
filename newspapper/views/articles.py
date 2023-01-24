@@ -18,10 +18,10 @@ def articles_list():
     return render_template("articles/list.html", articles=articles)
 
 
-@articles_app.route("/<string:tag>/", endpoint="filter")
-def articles_list(tag: str):
+@articles_app.route("/<string:tag_name>/", endpoint="filter")
+def articles_list(tag_name: str):
     articles = Article.query.options(joinedload(Article.tags)).filter(
-        Article.tags.any(Tag.name.contains(tag))
+        Article.tags.any(Tag.name.contains(tag_name))
     )
     return render_template("articles/list.html", articles=articles)
 
