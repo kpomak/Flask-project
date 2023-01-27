@@ -68,6 +68,28 @@ def create_users(username, password, email):
         print("done! admin created")
 
 
+@app.cli.command("create-tags")
+def create_tags():
+    """
+    Run in your terminal:
+    ➜ flask create-tags
+    """
+    from newspapper.models import Tag
+
+    tags = [
+        "#flask",
+        "#django",
+        "#python",
+        "#sqlalchemy",
+        "#jasvascript",
+    ]
+    for name in tags:
+        tag = Tag(name=name)
+        db.session.add(tag)
+    db.session.commit()
+    print("created tags")
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
