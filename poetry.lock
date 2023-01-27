@@ -147,6 +147,25 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-admin"
+version = "1.6.0"
+description = "Simple and extensible admin interface framework for Flask"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "Flask-Admin-1.6.0.tar.gz", hash = "sha256:424ffc79b7b0dfff051555686ea12e86e48dffacac14beaa319fb4502ac40988"},
+]
+
+[package.dependencies]
+Flask = ">=0.7"
+wtforms = "*"
+
+[package.extras]
+aws = ["boto"]
+azure = ["azure-storage-blob"]
+
+[[package]]
 name = "flask-login"
 version = "0.6.2"
 description = "User authentication and session management for Flask."
@@ -788,4 +807,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "e584b566e88495842b64c529d00bbfc50de17caba1a526bf3569bfbf6dfb4e0e"
+content-hash = "aeb033f26ed965ff6c12c5e8d628e81b14036c0d63f55853aee3f912ced4737b"

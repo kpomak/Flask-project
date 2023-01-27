@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, func
+from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String, Text,
+                        func)
 from sqlalchemy.orm import relationship
 
 from newspapper.models.article_tag import article_tag_association_table
