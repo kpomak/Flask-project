@@ -1,7 +1,19 @@
-from flask import (Blueprint, current_app, flash, redirect, render_template,
-                   request, url_for)
-from flask_login import (LoginManager, current_user, login_required,
-                         login_user, logout_user)
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import check_password_hash, generate_password_hash
 
