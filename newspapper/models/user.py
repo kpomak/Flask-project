@@ -22,6 +22,9 @@ class CustomUser(db.Model, UserMixin):
     def __repr__(self) -> str:
         return f"<CustomUser {self.id} {self.username}>"
 
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
 
 class Author(db.Model):
 
@@ -35,3 +38,6 @@ class Author(db.Model):
 
     def __repr__(self) -> str:
         return f"<Author {self.id} {self.user_id}>"
+
+    def __str__(self) -> str:
+        return f"{self.user.username}"

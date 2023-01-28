@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
+from newspapper.admin import admin
 from newspapper.models.database import db
 from newspapper.views.articles import articles_app
 from newspapper.views.auth import auth_app, login_manager
@@ -25,6 +26,7 @@ app.register_blueprint(authors_app, url_prefix="/authors")
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
 
+admin.init_app(app)
 db.init_app(app)
 login_manager.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
