@@ -1,4 +1,5 @@
 from flask_combo_jsonapi import ResourceList, ResourceDetail
+from combojsonapi.event.resource import EventsResource
 
 from newspapper.models.database import db
 from newspapper.models import Article
@@ -13,7 +14,13 @@ class ArticleBase:
     }
 
 
+class ArticleListEvents(EventsResource):
+    def event_get_count(self):
+        return {"count": Article.query.count()}
+
+
 class ArticleList(ArticleBase, ResourceList):
+    events = ArticleListEvents
     pass
 
 
