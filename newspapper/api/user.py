@@ -7,15 +7,17 @@ from newspapper.schemas import CustomUserSchema
 
 class CustomUserBase:
     schema = CustomUserSchema
+
+
+class CustomUserList(CustomUserBase, ResourceList):
     data_layer = {
         "session": db.session,
         "model": CustomUser,
     }
 
 
-class CustomUserList(CustomUserBase, ResourceList):
-    pass
-
-
 class CustomUserDetail(CustomUserBase, ResourceDetail):
-    pass
+    data_layer = {
+        "session": db.session,
+        "model": CustomUser,
+    }

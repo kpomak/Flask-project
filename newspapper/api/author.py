@@ -7,15 +7,17 @@ from newspapper.schemas import AuthorSchema
 
 class AuthorBase:
     schema = AuthorSchema
+
+
+class AuthorList(AuthorBase, ResourceList):
     data_layer = {
         "session": db.session,
         "model": Author,
     }
 
 
-class AuthorList(AuthorBase, ResourceList):
-    pass
-
-
 class AuthorDetail(AuthorBase, ResourceDetail):
-    pass
+    data_layer = {
+        "session": db.session,
+        "model": Author,
+    }
