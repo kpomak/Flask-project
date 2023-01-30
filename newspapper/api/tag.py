@@ -6,15 +6,17 @@ from newspapper.models import Tag
 
 class TagBase:
     schema = TagSchema
+
+
+class TagList(TagBase, ResourceList):
     data_layer = {
         "session": db.session,
         "model": Tag,
     }
 
 
-class TagList(TagBase, ResourceList):
-    pass
-
-
 class TagDetail(TagBase, ResourceDetail):
-    pass
+    data_layer = {
+        "session": db.session,
+        "model": Tag,
+    }

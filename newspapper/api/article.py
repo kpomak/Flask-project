@@ -8,10 +8,6 @@ from newspapper.schemas import ArticleSchema
 
 class ArticleBase:
     schema = ArticleSchema
-    data_layer = {
-        "session": db.session,
-        "model": Article,
-    }
 
 
 class ArticleListEvents(EventsResource):
@@ -21,7 +17,14 @@ class ArticleListEvents(EventsResource):
 
 class ArticleList(ArticleBase, ResourceList):
     events = ArticleListEvents
+    data_layer = {
+        "session": db.session,
+        "model": Article,
+    }
 
 
 class ArticleDetail(ArticleBase, ResourceDetail):
-    pass
+    data_layer = {
+        "session": db.session,
+        "model": Article,
+    }

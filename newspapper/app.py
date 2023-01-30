@@ -86,10 +86,13 @@ def create_tags():
         "#python",
         "#sqlalchemy",
         "#jasvascript",
+        "#news",
     ]
+
     for name in tags:
         tag = Tag(name=name)
         db.session.add(tag)
+
     db.session.commit()
     print("created tags")
 
