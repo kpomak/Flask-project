@@ -21,7 +21,6 @@ class ArticleListEvents(EventsResource):
 
 class ArticleList(ArticleBase, ResourceList):
     events = ArticleListEvents
-    pass
 
 
 class ArticleDetail(ArticleBase, ResourceDetail):
