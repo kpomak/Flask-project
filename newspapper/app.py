@@ -13,6 +13,7 @@ from newspapper.views.articles import articles_app
 from newspapper.views.auth import auth_app, login_manager
 from newspapper.views.authors import authors_app
 from newspapper.views.users import users_app
+from newspapper.api import init_api
 
 load_dotenv()
 
@@ -27,6 +28,7 @@ config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
 
 admin.init_app(app)
+init_api(app)
 db.init_app(app)
 login_manager.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
