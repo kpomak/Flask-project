@@ -1,4 +1,5 @@
 from marshmallow_jsonapi import Schema, fields
+from marshmallow import pre_load
 
 
 class TagSchema(Schema):
@@ -10,3 +11,9 @@ class TagSchema(Schema):
 
     id = fields.Integer(as_string=True)
     name = fields.String(allow_none=False, required=True)
+
+    @pre_load
+    def remove_id_before_deserializing(self, data, **kwargs):
+        if id in data:
+            del data["id"]
+        return data

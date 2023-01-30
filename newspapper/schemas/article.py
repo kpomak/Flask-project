@@ -1,5 +1,6 @@
 from combojsonapi.utils import Relationship
 from marshmallow_jsonapi import Schema, fields
+from marshmallow import pre_load
 
 
 class ArticleSchema(Schema):
@@ -9,7 +10,7 @@ class ArticleSchema(Schema):
         self_url_kwargs = {"id": "<id>"}
         self_url_many = "article_list"
 
-    id = fields.Integer(as_string=True)
+    id = fields.Integer(as_string=True, dump_only=True)
     title = fields.String(allow_none=False, required=True)
     text = fields.String(allow_none=False, required=True)
     created_at = fields.DateTime(allow_none=False)
@@ -34,3 +35,9 @@ class ArticleSchema(Schema):
         type_="tag",
         many=True,
     )
+
+    @pre_load
+    def remove_id_before_deserializing(self, data, **kwargs):
+        if id in data:
+            del data["id"]
+        return data

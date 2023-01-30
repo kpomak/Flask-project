@@ -1,5 +1,6 @@
 from combojsonapi.utils import Relationship
 from marshmallow_jsonapi import Schema, fields
+from marshmallow import pre_load
 
 
 class CustomUserSchema(Schema):
@@ -24,3 +25,9 @@ class CustomUserSchema(Schema):
         type_="author",
         many=False,
     )
+
+    @pre_load
+    def remove_id_before_deserializing(self, data, **kwargs):
+        if id in data:
+            del data["id"]
+        return data
