@@ -4,7 +4,7 @@ from newspapper.models.database import db
 from newspapper.models import Tag
 
 
-class TagList(ResourceList):
+class TagBase:
     schema = TagSchema
     data_layer = {
         "session": db.session,
@@ -12,9 +12,9 @@ class TagList(ResourceList):
     }
 
 
-class TagDetail(ResourceDetail):
-    schema = TagSchema
-    data_layer = {
-        "session": db.session,
-        "model": Tag,
-    }
+class TagList(TagBase, ResourceList):
+    pass
+
+
+class TagDetail(TagBase, ResourceDetail):
+    pass
