@@ -12,9 +12,9 @@ class ArticleSchema(Schema):
 
     id = fields.Integer(as_string=True, dump_only=True)
     title = fields.String(allow_none=False, required=True)
-    text = fields.String(allow_none=False, required=True)
-    created_at = fields.DateTime(allow_none=False)
-    updated_at = fields.DateTime(allow_none=False)
+    body = fields.String(allow_none=False, required=True)
+    dt_created = fields.DateTime(allow_none=False)
+    dt_updated = fields.DateTime(allow_none=False)
 
     author = Relationship(
         nested="AuthorSchema",

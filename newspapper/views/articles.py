@@ -1,18 +1,43 @@
-from flask import Blueprint, current_app, redirect, render_template, request, url_for
+import requests
+import os
+
+from flask import (Blueprint, current_app, redirect, render_template, request,
+                   url_for)
 from flask_login import current_user, login_required
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import join, joinedload
+from sqlalchemy.orm import joinedload
 from werkzeug.exceptions import NotFound
 
 from newspapper.forms.article import CreateArticleForm
 from newspapper.models import Article, Author, Tag
 from newspapper.models.database import db
 
+
 articles_app = Blueprint("articles_app", __name__)
+
+
+# @articles_app.route("/", endpoint="list")
+# def articles_list():
+#     articles = Article.query.options(joinedload(Article.tags)).all()
+#     return render_template("articles/list.html", articles=articles)
 
 
 @articles_app.route("/", endpoint="list")
 def articles_list():
+    BASE_URL = os.getenv("BASE_URL")
+    api_url = BASE_URL + '/api/articles/?include=author%2Ctags&fields%5Barticle%5D=id,title,body,author,tags&fields%5Bauthor%5D=id,user&fields%5Btag%5D=name,id'
+    response = requests.get(api_url).json()
+    articles_list = response["data"]
+    articless = [
+        {
+            "id": item["id"],
+            "title": item["attributes"]["title"],
+            "body": item["attributes"]["body"],
+            "author": item["relationships"]["author"],
+            "tags": item["relationships"]["tags"],
+        }
+        for item in articles_list
+    ]
     articles = Article.query.options(joinedload(Article.tags)).all()
     return render_template("articles/list.html", articles=articles)
 
