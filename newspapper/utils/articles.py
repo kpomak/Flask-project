@@ -54,4 +54,4 @@ def get_articles_by_api():
 
     count = requests.get(BASE_URL + "/api/articles/event_get_count/").json()
 
-    return articles, count
+    return articles, count.get("count")

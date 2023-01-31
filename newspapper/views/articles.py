@@ -25,9 +25,7 @@ def articles_list():
     the dumbest view in the whole world =P
     """
     articles, count = get_articles_by_api()
-    return render_template(
-        "articles/list.html", articles=articles, count=count.get("count")
-    )
+    return render_template("articles/list.html", articles=articles, count=count)
 
 
 @articles_app.route("/<string:tag_name>/", endpoint="filter")
