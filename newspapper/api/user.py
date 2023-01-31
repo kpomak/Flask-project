@@ -3,7 +3,10 @@ from flask_combo_jsonapi import ResourceList, ResourceDetail
 from newspapper.models.database import db
 from newspapper.models import CustomUser
 from newspapper.schemas import CustomUserSchema
-from newspapper.api.permissions.user import CustomUserPermission
+from newspapper.api.permissions.user import (
+    CustomUserGetPermission,
+    CustomUserPatchPermission,
+)
 
 
 class CustomUserBase:
@@ -20,6 +23,7 @@ class CustomUserList(CustomUserBase, ResourceList):
 class CustomUserDetail(CustomUserBase, ResourceDetail):
     data_layer = {
         "session": db.session,
-        "permissions_get": [CustomUserPermission],
+        "permission_patch": [CustomUserPatchPermission],
+        "permission_get": [CustomUserGetPermission],
         "model": CustomUser,
     }
