@@ -11,7 +11,7 @@ class ArticleBase:
 
 
 class ArticleListEvents(EventsResource):
-    def event_get_count(self):
+    def event_get_count(self, *args, **kwargs):
         return {"count": Article.query.count()}
 
 

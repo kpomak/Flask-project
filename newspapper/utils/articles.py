@@ -1,6 +1,7 @@
 import os
 import requests
 
+
 def get_articles_by_api():
     BASE_URL = os.getenv("BASE_URL")
     articles_url = (
@@ -51,4 +52,6 @@ def get_articles_by_api():
         for item in articles_response["data"]
     ]
 
-    return articles
+    count = requests.get(BASE_URL + "/api/articles/event_get_count/").json()
+
+    return articles, count
