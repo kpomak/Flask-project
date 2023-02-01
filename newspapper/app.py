@@ -3,6 +3,7 @@ import os
 import click
 from dotenv import load_dotenv
 from flask import Flask, render_template
+from flask_wtf import CSRFProtect
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
@@ -29,6 +30,7 @@ app.config.from_object(f"newspapper.config.{config_name}")
 
 admin.init_app(app)
 init_api(app)
+csrf = CSRFProtect(app)
 db.init_app(app)
 login_manager.init_app(app)
 migrate = Migrate(app, db, compare_type=True)
