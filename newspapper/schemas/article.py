@@ -10,7 +10,7 @@ class ArticleSchema(Schema):
         self_url_kwargs = {"id": "<id>"}
         self_url_many = "article_list"
 
-    id = fields.Integer(as_string=True, dump_only=True)
+    id = fields.Integer(as_string=True)
     title = fields.String(allow_none=False, required=True)
     body = fields.String(allow_none=False, required=True)
     dt_created = fields.DateTime(allow_none=False)
