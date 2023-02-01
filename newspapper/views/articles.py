@@ -59,7 +59,6 @@ def create_article():
     form = CreateArticleForm(request.form)
     form.tags.choices = [(tag.id, tag.name) for tag in Tag.query.order_by("name")]
     if request.method == "POST" and form.validate_on_submit():
-
         article = Article(title=form.title.data.strip(), body=form.body.data)
         if form.tags.data:
             selected_tags = Tag.query.filter(Tag.id.in_(form.tags.data))
@@ -67,7 +66,7 @@ def create_article():
 
         if current_user.author:
             # use existing author if present
-            article.author_id = current_user.author_id
+            article.author_id = current_user.author.id
         else:
             # otherwise create author record
             author = Author(user_id=current_user.id)
