@@ -24,7 +24,7 @@ Article #{{ article.id }}: {{ article.title }}
 		<div class="col-6">
 			{% if article.tags %}
 				{% for tag in article.tags %}
-				<a href="{{url_for('articles_app.filter', tag_name=tag.name)}}">
+				<a href="{{url_for('articles_app.filter', tag_name=tag.name)}}" style="text-decoration: none;">
 					<span class="badge bg-primary"> {{ tag.name }} </span>
 				</a>
 				{% endfor %}
