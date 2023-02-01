@@ -10,15 +10,11 @@ admin = Admin(
     template_mode="bootstrap3",
 )
 
-admin.add_view(
-    admin_view.TagAdminView(models.Tag, db.session, category="Models")
-)
+admin.add_view(admin_view.TagAdminView(models.Tag, db.session, category="Models"))
 admin.add_view(
     admin_view.ArticleAdminView(models.Article, db.session, category="Models")
 )
 admin.add_view(
     admin_view.CustomUserAdminView(models.CustomUser, db.session, category="Models")
 )
-admin.add_view(
-    admin_view.CustomAdminView(models.Author, db.session, category="Models")
-)
+admin.add_view(admin_view.CustomAdminView(models.Author, db.session, category="Models"))

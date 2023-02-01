@@ -10,11 +10,11 @@ class ArticleSchema(Schema):
         self_url_kwargs = {"id": "<id>"}
         self_url_many = "article_list"
 
-    id = fields.Integer(as_string=True, dump_only=True)
+    id = fields.Integer(as_string=True)
     title = fields.String(allow_none=False, required=True)
-    text = fields.String(allow_none=False, required=True)
-    created_at = fields.DateTime(allow_none=False)
-    updated_at = fields.DateTime(allow_none=False)
+    body = fields.String(allow_none=False, required=True)
+    dt_created = fields.DateTime(allow_none=False)
+    dt_updated = fields.DateTime(allow_none=False)
 
     author = Relationship(
         nested="AuthorSchema",
