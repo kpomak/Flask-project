@@ -48,12 +48,11 @@ migrate = Migrate(app, db, compare_type=True)
 
 @app.cli.command("create-admin")
 @click.argument("username")
-@click.argument("password")
 @click.argument("email")
-def create_users(username, password, email):
+def create_users(username, email):
     """
     Run in your terminal:
-    flask create-admin {username} {password} {email}
+    flask create-admin {username} {email}
     """
 
     from newspapper.models import CustomUser
@@ -61,7 +60,7 @@ def create_users(username, password, email):
     admin = CustomUser(
         username=username,
         email=email,
-        password=generate_password_hash(password),
+        password=generate_password_hash(os.getenv("ADMIN_PASSWORD")),
         is_staff=True,
     )
 
