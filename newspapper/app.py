@@ -14,26 +14,32 @@ from newspapper.views.articles import articles_app
 from newspapper.views.auth import auth_app, login_manager
 from newspapper.views.authors import authors_app
 from newspapper.views.users import users_app
-from newspapper.api import init_api
+from newspapper.api import init_api, api_app
 
 load_dotenv()
 
 app = Flask(__name__)
 
-app.register_blueprint(users_app, url_prefix="/users")
-app.register_blueprint(articles_app, url_prefix="/articles")
-app.register_blueprint(auth_app, url_prefix="/auth")
-app.register_blueprint(authors_app, url_prefix="/authors")
-
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
 
 admin.init_app(app)
-init_api(app)
+
+api = init_api(app, api_app)
+
 csrf = CSRFProtect(app)
+
 db.init_app(app)
+
 login_manager.init_app(app)
+
 migrate = Migrate(app, db, compare_type=True)
+
+app.register_blueprint(users_app, url_prefix="/users")
+app.register_blueprint(articles_app, url_prefix="/articles")
+app.register_blueprint(auth_app, url_prefix="/auth")
+app.register_blueprint(authors_app, url_prefix="/authors")
+app.register_blueprint(api_app, url_prefix="/api")
 
 
 # @app.cli.command("init-db")
