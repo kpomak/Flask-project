@@ -562,3 +562,5 @@ FodyWeavers.xsd
 .vscode
 
 db.sqlite
+
+.secrets
