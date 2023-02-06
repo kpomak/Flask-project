@@ -6,7 +6,7 @@ Articles list
 
 {% block body %}
 <h1>
-	Articles&nbsp;({{ count }})
+	Articles<!-- &nbsp;({{ count }}) -->
 </h1>
 <div>
 	<ul>
@@ -14,7 +14,7 @@ Articles list
 		<li>
 			<a href="{{ url_for('articles_app.details', article_id=article.id) }}">{{
 				article.title }}</a>
-			by {{ article.author.user.first_name }} {{ article.author.user.last_name }}
+			by {{ article.author.user.username }}
 			{% for tag in article.tags %}
 			<a href="{{url_for('articles_app.filter', tag_name=tag.name)}}" style="text-decoration: none;">
 				<span class="badge bg-primary"> {{ tag.name }} </span>

@@ -13,6 +13,8 @@ def get_articles_by_api():
         + "/api/authors/?include=user%2Carticles&fields%5Bauthor%5D=id,user&fields%5Buser%5D=first_name,id,last_name"
     )
     articles_response = requests.get(articles_url).json()
+    if not articles_response["data"]:
+        return [], None
     authors_response = requests.get(authors_url).json()
 
     authors_list = {
