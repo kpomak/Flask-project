@@ -22,9 +22,12 @@ chatGPT
         <input class="gpt-input" type="text" name="request" placeholder="Enter your request" required />
         <input class="gpt-input" type="submit" value="Send" />
     </form>
-    {% if result %}
-    <div class="result">{{ result }}</div>
-    {% endif %}
-
+    <div class="gpt-result">
+        {% if result %}
+        {% for line in result %}
+        <div class="result">{{ line }}</div>
+        {% endfor %}
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

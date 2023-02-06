@@ -120,6 +120,5 @@ def index():
             presence_penalty=0,
         )
         return redirect(url_for("index", result=response.choices[0].text))
-
-    result = request.args.get("result")
+    result = request.args.get("result").split('\n')
     return render_template("index.html", result=result)
