@@ -1,8 +1,9 @@
 import os
 
 import click
+import openai
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import CSRFProtect
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
@@ -22,6 +23,7 @@ app = Flask(__name__)
 
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
+openai.api_key = os.getenv("API_KEY")
 
 admin.init_app(app)
 
@@ -104,6 +106,20 @@ def create_tags():
     print("created tags")
 
 
-@app.route("/")
+@app.route("/", methods=("GET", "POST"))
 def index():
-    return render_template("index.html")
+    if request.method == "POST":
+        prompt = request.form["request"]
+        response = openai.Completion.create(
+            prompt=prompt.capitalize(),
+            engine="text-davinci-003",
+            max_tokens=1024,
+            temperature=0.6,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0,
+        )
+        return redirect(url_for("index", result=response.choices[0].text))
+
+    result = request.args.get("result")
+    return render_template("index.html", result=result)
