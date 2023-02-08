@@ -1,4 +1,3 @@
-import datetime
 from pprint import pprint
 
 import requests
@@ -22,7 +21,7 @@ def lenta_ru_parser():
         """
         date = article.get("date")
         if date != None and len(date) < 6:
-            article["date"] += f", {current_date}"
+            del article["date"]
 
     def correct_url(link):
         """
@@ -33,7 +32,6 @@ def lenta_ru_parser():
             url + relative_url if relative_url.startswith("/") else relative_url
         )
 
-    current_date = datetime.date.today().strftime("%d %B %Y")
     url = "https://lenta.ru"
     parsed_data = []
     headers = {

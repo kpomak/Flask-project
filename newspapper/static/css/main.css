@@ -28,6 +28,12 @@
   cursor: pointer;
   margin-bottom: 20px;;
 }
+.news-img {
+  max-width: 280px;
+}
+.news-content {
+  max-width: 560px;
+}
 .result {
   font-weight: bold;
   text-align: left;
