@@ -112,20 +112,20 @@ def index():
         prompt = request.form["request"]
         try:
             response = openai.Completion.create(
-            prompt=prompt.capitalize(),
-            engine="text-davinci-003",
-            max_tokens=1024,
-            temperature=0.6,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
+                prompt=prompt.capitalize(),
+                engine="text-davinci-003",
+                max_tokens=1024,
+                temperature=0.6,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
             )
         except Exception:
-            error = lambda : None
-            response = lambda : None
-            error.text = "chatGPT is busy\nPlease try again now"
-            response.choices = [error]
-        return redirect(url_for("index", result=response.choices[0].text))
+            response = None
+            error = "chatGPT is busy now\nPlease try again immediately"
+        return redirect(
+            url_for("index", result=(response.choices[0].text) if response else error)
+        )
     result = request.args.get("result")
     if result:
         result = result.split("\n")
