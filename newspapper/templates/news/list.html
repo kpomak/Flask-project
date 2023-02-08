@@ -11,9 +11,12 @@ Hot news
 <div>
     {% for article in news %}
     <div>
-        <img src="{{ article.img }}" alt="photo">
+        <a href="{{ article.link }}">
+            <img src="{{ article.img }}" alt="photo">
+        </a>
         <div>{{ article.title }}</div>
         <div>{{ article.body }}</div>
+        <div>{{ article.date}}</div>
     </div>
     {% endfor %}
 </div>
