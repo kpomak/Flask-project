@@ -1,16 +1,33 @@
 {% extends 'base.html' %}
+{% from "macro/formhelpers.html" import render_field %}
 
 {% block title %}
-    Newspapper
+chatGPT
 {% endblock %}
 
 {% block body %}
-    <h1>
-        Hello
-        {% if current_user.is_authenticated %}
-            {{ current_user.username }}
-        {% else %}
-            anon
+<h1>
+    Hello
+    {% if current_user.is_authenticated %}
+    {{ current_user.username }}!
+    {% else %}
+    stranger!
+    {% endif %}
+</h1>
+<div class="gpt-content">
+    <img src="{{ url_for('static', filename='img/djokonda.png') }}" class="icon" />
+    <h2>chatGPT</h2>
+    <form class="gpt-form" action="/" method="post">
+        <input class="gpt-input" type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input class="gpt-input" type="text" name="request" placeholder="Enter your request" required />
+        <input class="gpt-input" type="submit" value="Send" />
+    </form>
+    <div class="gpt-result">
+        {% if result %}
+        {% for line in result %}
+        <div class="result">{{ line }}</div>
+        {% endfor %}
         {% endif %}
-    </h1>
+    </div>
+</div>
 {% endblock %}
