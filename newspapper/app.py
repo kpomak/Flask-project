@@ -122,7 +122,7 @@ def index():
             )
         except Exception:
             response = None
-            error = "chatGPT is busy now\nPlease try again immediately"
+            error = "chatGPT is busy now 💀💤\nPlease try again immediately"
         return redirect(
             url_for("index", result=(response.choices[0].text) if response else error)
         )
