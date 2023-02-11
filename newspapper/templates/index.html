@@ -25,7 +25,7 @@ chatGPT
     <div class="gpt-result">
         {% if result %}
         {% for line in result %}
-        <pre class="result mb-0">{{ line }}</pre>
+        <div style="white-space: pre-wrap; font-family: monospace;" class="result mb-0">{{ line }}</div>
         {% endfor %}
         {% endif %}
     </div>
