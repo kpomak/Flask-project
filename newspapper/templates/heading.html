@@ -7,7 +7,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                {% for (endpoint, label) in [('news_app.list', 'News'), ('users_app.list', 'Users'), ('articles_app.list', 'Articles'), ('authors_app.list', 'Authors'), ('api-docs.openapi_swagger_ui', 'Swagger')] %}
+                {% for (endpoint, label) in [('news_app.list', 'News'), ('users_app.list', 'Users'), ('articles_app.list', 'Articles'), ('authors_app.list', 'Authors'), ('api-docs.openapi_swagger_ui', 'API')] %}
                 <a href="{{ url_for(endpoint) }}"
                     class="nav-link {% if request.endpoint == endpoint -%}active{%- endif %}">
                     {{ label }}

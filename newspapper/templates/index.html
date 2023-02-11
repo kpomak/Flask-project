@@ -24,9 +24,9 @@ chatGPT
     </form>
     <div class="gpt-result">
         {% if result %}
-        {%+ for line in result %}
+        {% for line in result %}
         <pre class="result mb-0">{{ line }}</pre>
-        {%+ endfor %}
+        {% endfor %}
         {% endif %}
     </div>
 </div>
