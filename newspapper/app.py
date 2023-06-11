@@ -10,6 +10,7 @@ from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 from googletrans import Translator
+from markdown import markdown
 
 from newspapper.admin import admin
 from newspapper.models.database import db
@@ -136,7 +137,7 @@ def index():
             response = bard.get_answer(prompt.text).get("content")
         except Exception:
             response = None
-            error = "chatGPT free trial is expired :)\nBard is busy now 💀💤\nPlease try again later"
+            error = "Bard is busy now 💀💤\nPlease try again later"
         # return redirect(
         #     url_for("index", result=(response.choices[0].text) if response else error)
         # )
@@ -146,5 +147,5 @@ def index():
     
     result = request.args.get("result")
     if result:
-        result = result.split("\n")
+        result = markdown(result, extensions=["fenced_code"])
     return render_template("index.html", result=result)

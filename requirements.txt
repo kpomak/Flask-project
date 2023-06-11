@@ -35,6 +35,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.3
 lxml==4.9.2
 Mako==1.2.4
+Markdown==3.4.3
 MarkupSafe==2.0.1
 marshmallow==3.2.1
 marshmallow-jsonapi==0.24.0

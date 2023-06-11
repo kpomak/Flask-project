@@ -2,7 +2,7 @@
 {% from "macro/formhelpers.html" import render_field %}
 
 {% block title %}
-chatGPT
+Bard by Google
 {% endblock %}
 
 {% block body %}
@@ -16,7 +16,7 @@ chatGPT
 </h1>
 <div class="gpt-content">
     <img src="{{ url_for('static', filename='img/djokonda.png') }}" class="icon" />
-    <h2>chatGPT</h2>
+    <h2>Bard AI</h2>
     <form class="gpt-form" action="/" method="post">
         <input class="gpt-input" type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <input class="gpt-input" type="text" name="request" placeholder="Enter your request" required />
@@ -24,9 +24,7 @@ chatGPT
     </form>
     <div class="gpt-result">
         {% if result %}
-        {% for line in result %}
-        <div style="white-space: pre-wrap; font-family: monospace;" class="result mb-0">{{ line }}</div>
-        {% endfor %}
+        {{ result|safe}}
         {% endif %}
     </div>
 </div>
