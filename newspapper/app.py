@@ -1,13 +1,15 @@
 import os
 
 import click
-import openai
+# import openai
+from bardapi import Bard
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import CSRFProtect
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
+from googletrans import Translator
 
 from newspapper.admin import admin
 from newspapper.models.database import db
@@ -24,7 +26,11 @@ app = Flask(__name__)
 
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
-openai.api_key = os.getenv("API_KEY")
+# openai.api_key = os.getenv("API_KEY")
+token = os.getenv("BARD_API_KEY")
+bard = Bard(token=token)
+
+translator = Translator()
 
 admin.init_app(app)
 
@@ -111,23 +117,33 @@ def create_tags():
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        prompt = request.form["request"]
+        prompt = translator.translate(request.form["request"])
+        # try:
+        #     response = openai.Completion.create(
+        #         prompt=prompt.capitalize(),
+        #         engine="text-davinci-003",
+        #         max_tokens=1024,
+        #         temperature=0.6,
+        #         top_p=1,
+        #         frequency_penalty=0,
+        #         presence_penalty=0,
+        #     )
+        # except Exception:
+        #     response = None
+        #     error = "chatGPT is busy now 💀💤\nPlease try again immediately"
+
         try:
-            response = openai.Completion.create(
-                prompt=prompt.capitalize(),
-                engine="text-davinci-003",
-                max_tokens=1024,
-                temperature=0.6,
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-            )
+            response = bard.get_answer(prompt.text).get("content")
         except Exception:
             response = None
-            error = "chatGPT is busy now 💀💤\nPlease try again immediately"
+            error = "chatGPT free trial is expired :)\nBard is busy now 💀💤\nPlease try again later"
+        # return redirect(
+        #     url_for("index", result=(response.choices[0].text) if response else error)
+        # )
         return redirect(
-            url_for("index", result=(response.choices[0].text) if response else error)
+            url_for("index", result=response if response else error)
         )
+    
     result = request.args.get("result")
     if result:
         result = result.split("\n")

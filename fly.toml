@@ -1,37 +1,14 @@
-# fly.toml file generated for autumn-dew-3144 on 2023-02-02T11:34:18+03:00
+# fly.toml app configuration file generated for fragrant-hill-2781 on 2023-06-10T01:58:00+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "autumn-dew-3144"
-kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
+app = "fragrant-hill-2781"
+primary_region = "bos"
 
-[env]
-
-[experimental]
-  auto_rollback = true
-
-[[services]]
-  http_checks = []
+[http_service]
   internal_port = 8080
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
