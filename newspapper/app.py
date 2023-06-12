@@ -1,16 +1,17 @@
 import os
 
 import click
+
 # import openai
-from bardapi import Bard
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import CSRFProtect
 from flask_migrate import Migrate
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
-from googletrans import Translator
 from markdown import markdown
+
+load_dotenv()
 
 from newspapper.admin import admin
 from newspapper.models.database import db
@@ -19,19 +20,15 @@ from newspapper.views.auth import auth_app, login_manager
 from newspapper.views.authors import authors_app
 from newspapper.views.users import users_app
 from newspapper.views.news import news_app
+from newspapper.views.bard import bard_app
 from newspapper.api import init_api, api_app
-
-load_dotenv()
+from newspapper.utils.bard import translator, bard
 
 app = Flask(__name__)
 
 config_name = os.environ.get("CONFIG_NAME") or "ProductionConfig"
 app.config.from_object(f"newspapper.config.{config_name}")
 # openai.api_key = os.getenv("API_KEY")
-token = os.getenv("BARD_API_KEY")
-bard = Bard(token=token)
-
-translator = Translator()
 
 admin.init_app(app)
 
@@ -51,6 +48,7 @@ app.register_blueprint(auth_app, url_prefix="/auth")
 app.register_blueprint(authors_app, url_prefix="/authors")
 app.register_blueprint(news_app, url_prefix="/news")
 app.register_blueprint(api_app, url_prefix="/")
+app.register_blueprint(bard_app, url_prefix="/bard")
 
 
 # @app.cli.command("init-db")
@@ -141,10 +139,8 @@ def index():
         # return redirect(
         #     url_for("index", result=(response.choices[0].text) if response else error)
         # )
-        return redirect(
-            url_for("index", result=response if response else error)
-        )
-    
+        return redirect(url_for("index", result=response if response else error))
+
     result = request.args.get("result")
     if result:
         result = markdown(result, extensions=["fenced_code"])
