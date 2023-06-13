@@ -10,5 +10,8 @@ bard_app = Blueprint("bard_app", __name__)
 def answer():
     question = request.args.get("content")
     question = translator.translate(question)
-    response = bard.get_answer(question.text)
+    try:
+        response = bard.get_answer(question.text)
+    except Exception:
+        response = {"content": "I'm sorry!\nI'm tired ;("}
     return jsonify(response)
